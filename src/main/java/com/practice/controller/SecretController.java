@@ -1,6 +1,7 @@
 package com.practice.controller;
 
 import com.practice.service.LoggedUserManagementService;
+import com.practice.service.LoginCounterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/secret")
 public class SecretController {
     private final LoggedUserManagementService loggedUserManagementService;
+    private final LoginCounterService loginCounterService;
 
-    public SecretController(LoggedUserManagementService loggedUserManagementService) {
+    public SecretController(
+            LoggedUserManagementService loggedUserManagementService,
+            LoginCounterService loginCounterService
+    ) {
         this.loggedUserManagementService = loggedUserManagementService;
+        this.loginCounterService = loginCounterService;
     }
 
     @GetMapping
@@ -28,6 +34,7 @@ public class SecretController {
         if (username == null) return "redirect:/login";
 
         model.addAttribute("username", username);
+        model.addAttribute("loginCountNumber", this.loginCounterService.getCount());
 
         return "secret";
     }

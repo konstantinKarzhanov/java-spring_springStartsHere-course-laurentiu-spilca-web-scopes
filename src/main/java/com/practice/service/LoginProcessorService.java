@@ -11,12 +11,19 @@ import java.util.Map;
 @RequestScope
 public class LoginProcessorService {
     private final LoggedUserManagementService loggedUserManagementService;
+    private final LoginCounterService loginCounterService;
 
-    public LoginProcessorService(LoggedUserManagementService loggedUserManagementService) {
+    public LoginProcessorService(
+            LoggedUserManagementService loggedUserManagementService,
+            LoginCounterService loginCounterService
+    ) {
         this.loggedUserManagementService = loggedUserManagementService;
+        this.loginCounterService = loginCounterService;
     }
 
     public boolean validateCredentials(LoginDTO loginDTO) {
+        this.loginCounterService.increment();
+
         Map<String, String> registeredUsersMap = new HashMap<>();
 
         registeredUsersMap.put("test1", "test1");
